@@ -26,7 +26,7 @@ exports.postAddProduct = async (req, res, next) => {
         const newProduct = new Product({
             name: name,
             productType: productType,
-            imageUrl: 'images is not working ', //image.path,
+            imageUrl: image.path,
             fresh: fresh,
             seller:req.userId,
             price:price
