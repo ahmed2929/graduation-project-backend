@@ -25,6 +25,7 @@ const orderSchema = new schema({
             default: 'product'
         }
     }],
+    totalPrice:Number,
     location: {
         type: { type: String },
         
