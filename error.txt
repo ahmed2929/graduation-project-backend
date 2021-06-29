@@ -1,0 +1,92 @@
+    0=>internal server error
+
+    //client
+    1=> "success",
+    2=> "not authrized",
+    3=> "user not found",
+    4=> "client have been blocked",
+    5=> "validation faild",
+    //signup
+    6=> "This user is already registered with mobile"
+    26=> "This user is already registered with email"
+    //login
+    7=> "Client not found"
+    8=> "wrong password"
+    //shop
+    9=> "not found for order or product ....."
+    10=> "cart is empty when u add as order"
+    //cancel order
+    11=> "you are not the order owner!! (in cancel order)"
+    12=> "the order status != started ()"
+    //fev
+    13=> "the product allready in fev list"
+    14=> "wanna put issue for not ended order"
+    //change password
+    15=> "if old password = new password"
+    17=> "token expired becouse the user chosed to logout from other devices... only the other devices will logout"
+    //change mobile
+    16=> "if new mobile = old mobile"
+    //single order
+    18=>'not the order owner'
+    //pay
+    19=>'offer is canceled or the order is ended'
+    20=>'payment error'
+    
+    //seller get client data
+    21=>client didn't select the seller's offer 
+    22=>some thing happend in client payment
+
+    //seller add offer
+    23=>seller can't add more than offer for the same order
+    27=>you should provide certificate for order category
+    28=>one or more of the order category is under review
+    29=>certificate expired
+    51=>price less than panana dlivry price                             <<<<<>>>>><<<<>>>><<<<>>>><<<<<<<<<<<< NEW 
+    
+    //seller add category
+    30=>category already exestes 
+
+    //client issue 
+    24=>can't find selected offer for the order
+    49=>order didn't delever                                             <<<<<>>>>><<<<>>>><<<<>>>><<<<<<<<<<<< NEW 
+    50=>can't but issue after 3 dayes                                    <<<<<>>>>><<<<>>>><<<<>>>><<<<<<<<<<<< NEW 
+    25=>issue allready creted
+
+    //SMS
+    31=>error sending sms
+    32=>invalid mobile number
+    33=>no sms Credi
+    34=>you must verfy the account to countenue
+    35=>not allowed url accout allready verfied
+    36=>wrong code
+    37=>validation code expired
+
+    //delete fev list
+    38=>not allowed to delete general list
+
+    //pay from wallet
+    39=>no enough mony in client wallet
+    
+    //cancel coming order
+    40=>order not ended (no offer sellected)
+    41=>payment required client didn't pay 
+    42=>can't cancel order after deliver!!! 
+
+    //seller delever order 
+    43=>order canceld or client haven't sellect yet 
+    44=>no offer found for the seller 
+    45=>order allready deleverd
+    46=>order canceld by the user 
+
+    //rate
+    47=>order didn't delever
+
+    //seller pull request
+    48=>amount is biggeer than seller wallet
+
+    //seller guest
+    52=>you can't filter with location in guest
+
+    //client offers
+    53=>you should provide location
+    55=>authraization required for filtering
