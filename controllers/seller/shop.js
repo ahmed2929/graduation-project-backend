@@ -147,6 +147,10 @@ exports.getOrders = async (req, res, next) => {
         .populate({
             path:'sloldItems.product'
           })
+          .populate({
+              path:'sloldItems.client',
+              select:'name mobile email'
+          })
 
         res.status(200).json({
             state: 1,
