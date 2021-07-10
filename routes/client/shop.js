@@ -1,7 +1,7 @@
 const express = require('express');
 const { body } = require('express-validator');
 
-const { getProducts, addToCart, getUserCart, deleteFromCart ,makeOrder,getOrders} = require("../../controllers/client/shop");
+const { getProducts, addToCart, getUserCart, deleteFromCart ,makeOrder,getOrders,getNotification} = require("../../controllers/client/shop");
 const isAuth = require('../../meddlewere/client/isAuth');
 
 const router = express.Router();
@@ -24,6 +24,7 @@ router.post('/makeOrder', [
 ], isAuth, makeOrder);
 
 router.get('/getOrders', isAuth, getOrders);
+router.get('/getNotification', isAuth, getNotification);
 
 
 module.exports = router;

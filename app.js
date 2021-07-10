@@ -7,11 +7,11 @@ const fs = require('fs');
 const path = require('path')
 const sharp = ("sharp")
 const clintShop=require("./routes/client/shop")
-
+const {changeOrderStatus,search}=require("./controllers/general/index")
 require('dotenv').config();
 
 
-const port = process.env.PORT || 6000;
+const port = process.env.PORT || 8080;
 const MONGODB_URI = process.env.MONGODB_URI;
 
 var storage = multer.diskStorage({
@@ -82,7 +82,14 @@ app.use('/client/shop', clintShop);
 //seller
 app.use('/seller', sellerAuth);
 app.use('/seller/shop', sellerShop);
+// general apis
 
+app.post('/changeOrderStatus',changeOrderStatus)
+app.get('/search',search)
+
+
+
+//
 app.use((error, req, res, next) => {
     const status = error.statusCode || 500;
     const state = error.state || 0;

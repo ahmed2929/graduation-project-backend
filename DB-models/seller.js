@@ -54,28 +54,6 @@ const sellerSchema = new schema({
         type: String
     }],
 
-    sendNotfication: {
-        all:{
-            type:Boolean,
-            default:true
-        },
-        nearOrders:{
-            type:Boolean,
-            default:true
-        },
-        issues:{
-            type:Boolean,
-            default:true
-        },
-        orderStatus:{
-            type:Boolean,
-            default:true
-        },
-        update:{
-            type:Boolean,
-            default:true
-        },
-    },
     rate: {
         type: Number,
         default: 0
@@ -111,6 +89,10 @@ const sellerSchema = new schema({
         locationName:String,
         locationAddres:String,
 
+    }],
+    Notification:[{
+        type:schema.Types.ObjectId,
+        ref:'notification'
     }]
     
 });

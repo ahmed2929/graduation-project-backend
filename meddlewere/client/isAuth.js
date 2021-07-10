@@ -57,6 +57,7 @@ module.exports = async (req, res, next) => {
         }
 
         req.userId = decodedToken.userId;
+        req.user= client._doc
 
         next();
 

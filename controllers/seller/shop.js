@@ -13,6 +13,7 @@ exports.postAddProduct = async (req, res, next) => {
     const price=req.body.price;
     const image = req.files[0]
     const fresh = req.body.fresh || 'none';
+    const {quantity}=req.body
 
 
     try {
@@ -29,7 +30,8 @@ exports.postAddProduct = async (req, res, next) => {
             imageUrl: image.path,
             fresh: fresh,
             seller:req.userId,
-            price:price
+            price:price,
+            quantity
         });
 
         const product = await newProduct.save();
@@ -56,6 +58,7 @@ exports.postEditProduct = async (req, res, next) => {
     const price=req.body.price;
     const image = req.files[0]
     const id = req.body.id;
+    const quantity=req.body
 
 
     try {
@@ -85,6 +88,7 @@ exports.postEditProduct = async (req, res, next) => {
         product.name = name;
         product.productType = productType;
         product.price=price;
+        product.quantity=quantity||product.quantity
 
         if (image) {
             deleteFile.deleteFile(path.join(__dirname + '/../../' + product.imageUrl));
@@ -111,7 +115,7 @@ exports.getProduct = async (req, res, next) => {
 
     const page = req.query.page || 1;
     const productPerPage = 10 ;
-
+    
     try {
 
 
@@ -152,12 +156,14 @@ exports.getOrders = async (req, res, next) => {
               select:'name mobile email'
           })
 
+         
+          
         res.status(200).json({
             state: 1,
             sloldItems
         
         });
-
+//
 
     } catch (err) {
         if (!err.statusCode) {
@@ -166,3 +172,21 @@ exports.getOrders = async (req, res, next) => {
         next(err);
     }
 }
+
+exports.getNotification = async (req, res, next) => {
+    try {
+      const notification =await Seller.findById(req.userId)
+      .populate('Notification')
+        .select("Notification")
+      res.status(200).json({
+        notification
+      })
+  
+    } catch (err) {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    }
+  }
+  

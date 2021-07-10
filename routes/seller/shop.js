@@ -5,6 +5,7 @@ const authController = require('../../controllers/seller/shop');
 // const isAuthVerfy         = require('../../meddlewere/seller/isAuthVerfy');
  const isAuth         = require('../../meddlewere/seller/isAuth');
 
+  
 
 const router  = express.Router();
 
@@ -34,7 +35,7 @@ router.post('/editProduct', isAuth, [
 
 router.get('/Products',isAuth ,authController.getProduct);
 router.get('/getOrders',isAuth ,authController.getOrders);
-
+router.get('/getNotification', isAuth, authController.getNotification);
 
 
 module.exports = router;

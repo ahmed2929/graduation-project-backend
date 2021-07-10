@@ -3,8 +3,8 @@ const Client = require("../../DB-models/client");
 const Seller =require("../../DB-models/seller")
 const Order =require("../../DB-models/order")
 const { check, validationResult } = require('express-validator');
-
-
+const {sendNotification } =require("../../helpers/sendNotfication")
+ 
 exports.getProducts = async (req, res, next) => {
   /**
    * this func accept query params id if it exist will return details of thar product
@@ -204,18 +204,51 @@ exports.makeOrder = async (req, res, next) => {
 
     let orderPrice = 0;
 
+    if(client.cart.length<1){
+      const error = new Error(`your cart is empty add some products`);
+      error.statusCode = 422;
+      error.state = 5;
+      throw error;
+    }
+      
     client.cart.forEach(async product => {
+      // console.debug("product is ",product)
       orderPrice = orderPrice + product.totalPrice;
     const {seller}=product.product
     const editSeller =await Seller.findById(seller)
+    const editproduct =await Product.findById(product.product._id)
+
+   
+    if(Number(editproduct.quantity)<Number(product.amount)){
+     
+     
+      return res.status(422).json({
+        message: `the amount you want is not avilable right now the avilable amount is ${editproduct.quantity}`,
+         
+      });
+    }
+    editproduct.quantity=  editproduct.quantity-product.amount;
+    await editproduct.save()
     editSeller.sloldItems.push({
       product: product.product.id,
       client:req.userId,
-      amount:product.product.amount,
+      amount:product.amount,
       locationAddres,
       locationName
     })
     await editSeller.save()
+
+     //////////////////////////////
+
+    let notification={
+      title:"new order created",
+      body:`new order craeted by ${req.user.name} `
+    }
+
+     sendNotification('seller',editSeller._id,'newOrderCreated',notification,null)
+
+     ////////////////////////////
+
 
   });
   
@@ -229,6 +262,13 @@ exports.makeOrder = async (req, res, next) => {
     }).save();
       client.cart = [];
      await client.save();
+
+     let notif={
+      title:"new order created",
+      body:`new order craeted order `
+    }
+     sendNotification('',req.userId,'newOrderCreated',notif,order)
+   
       return res.status(201).json({
        message: "order created",
         data: order,
@@ -244,13 +284,31 @@ exports.makeOrder = async (req, res, next) => {
 };
 
 exports.getOrders = async (req, res, next) => {
-
+  const type=req.query.type
   try {
-    const orders = await Order.find({client:req.userId})
-    .populate({
-      path:'products'
-    })
-  
+    let orders
+    if(type){
+       orders = await Order.find({
+        client:req.userId,
+        status:type
+      
+      })
+        .populate({
+          path:'products'
+        })
+      
+    }else{
+
+       orders = await Order.find({
+        client:req.userId,
+      
+      })
+        .populate({
+          path:'products'
+        })
+
+    }
+   
    
     return res.status(200).json({
       orders
@@ -297,4 +355,22 @@ exports.deleteFromCart = async (req, res, next) => {
     next(err);
   }
 
+}
+
+
+exports.getNotification = async (req, res, next) => {
+  try {
+    const notification =await Client.findById(req.userId)
+    .populate('Notification')
+    .select('Notification')
+    res.status(200).json({
+      notification
+    })
+
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
 }

@@ -57,87 +57,29 @@ const clientSchema = new schema({
             type: Number,
             default: 0
         },
-        // unit: {
-        //     type: String,
-        //     enum: ['kg', 'g', 'grain', 'Liter', 'Gallon', 'drzn', 'bag'],
-        //     required: true
-        // },
+    
         path: {
             type: String,
             default: 'product'
         }
     }],
-    // wallet: {
-    //     type: Number,
-    //     default: 0
-    // },
+   
     FCMJwt: [{
         type: String
     }],
-    // lang:{
-    //     type:String,
-    //     default:'en'
-    // },
-    sendNotfication: {
-        all: {
-            type: Boolean,
-            default: true
-        },
-        newOffer: {
-            type: Boolean,
-            default: true
-        },
-        offerStatus: {
-            type: Boolean,
-            default: true
-        },
-        update: {
-            type: Boolean,
-            default: true
-        },
-    },
+ 
     updated: {
         type: String,
         required: true
     },
-
-    // verficationCode:String,
-    // codeExpireDate:Date,
-    // tempMobile:String,
-    // tempCode:String
+    Notification:[{
+        type:schema.Types.ObjectId,
+        ref:'notification'
+    }]
+  
 });
 
-// clientSchema.methods.addToCart = function (prodductId, amount, unit, ref) {
-//     const CreatedBerore = this.cart.findIndex(val => {
-//         return val.product.toString() === prodductId.toString() && unit === val.unit;
-//     });
 
-//     let newAmount = 1;
-//     const updatedCartItems = [...this.cart];
-
-//     if (CreatedBerore >= 0) {
-//         newAmount = this.cart[CreatedBerore].amount + amount;
-//         updatedCartItems[CreatedBerore].amount = newAmount;
-//     } else {
-//         updatedCartItems.push({
-//             product: prodductId,
-//             amount: amount,
-//             unit: unit,
-//             path: ref
-//         });
-//     }
-//     this.cart = updatedCartItems;
-//     return this.save();
-// }
-
-
-// clientSchema.methods.removeFromCart = function (cartItemId) {
-//     const updatedCartItems = this.cart.filter(item => {
-//         return item._id.toString() !== cartItemId.toString();
-//     });
-//     this.cart = updatedCartItems;
-//     return this.save();
-// };
 
 
 module.exports = mongoose.model('client', clientSchema);

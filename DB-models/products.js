@@ -32,6 +32,10 @@ const productSchema = new schema({
     price: {
         type: Number,
         required: true
+    },
+    quantity:{
+     type:Number,
+     required:true   
     }
 }, { timestamps: true });
 
