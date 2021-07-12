@@ -96,10 +96,11 @@ mongoose
         MONGODB_URI, {
         useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false,
         useCreateIndex:true
+
     })
     .then(result => {
         app.listen(port,()=>{
-            console.debug("server is up on port ",port)
+            console.log("server is up on port ",port)
         });
 
         //=======>>>>    //scadual section// <<<<<<=====

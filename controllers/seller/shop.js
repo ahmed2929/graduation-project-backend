@@ -1,8 +1,17 @@
 const { check, validationResult } = require('express-validator');
 
 const path = require('path')
+const fs = require('fs');
 
 const deleteFile = require("../../helpers/file");
+
+var cloudinary = require('cloudinary').v2;
+cloudinary.config({
+    cloud_name:'eaa04168',
+    api_key:'272569683349881',
+    api_secret:'Cdqg4M48LO5NrKHU3c-wcXZ669A'
+    
+    });
 
 const Product = require('../../DB-models/products');
 const Seller =require("../../DB-models/seller")
@@ -23,17 +32,21 @@ exports.postAddProduct = async (req, res, next) => {
             throw error;
         }
 
+        
+      let img=await cloudinary.uploader.upload(image.path);
+      
+      console.log('image is ',img.url);
         const newProduct = new Product({
             name: name,
             productType: productType,
-            imageUrl: image.path,
+            imageUrl: img.url,
             fresh: fresh,
             seller:req.userId,
             price:price
         });
 
         const product = await newProduct.save();
-
+       fs.unlinkSync(image.path);
         res.status(201).json({
             state: 1,
             message: "product created",
