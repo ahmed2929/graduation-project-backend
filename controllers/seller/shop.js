@@ -1,7 +1,14 @@
 const { check, validationResult } = require('express-validator');
 
 const path = require('path')
-
+const fs = require('fs');
+var cloudinary = require('cloudinary').v2;
+cloudinary.config({
+    cloud_name:'eaa04168',
+    api_key:'272569683349881',
+    api_secret:'Cdqg4M48LO5NrKHU3c-wcXZ669A'
+    
+    });
 const deleteFile = require("../../helpers/file");
 
 const Product = require('../../DB-models/products');
@@ -23,19 +30,20 @@ exports.postAddProduct = async (req, res, next) => {
             error.state = 5;
             throw error;
         }
+        let img=await cloudinary.uploader.upload(image.path);
 
         const newProduct = new Product({
             name: name,
             productType: productType,
-            imageUrl: image.path,
+            imageUrl: img.url,
             fresh: fresh,
             seller:req.userId,
             price:price,
             quantity
         });
-
+        fs.unlinkSync(image.path);
         const product = await newProduct.save();
-
+        
         res.status(201).json({
             state: 1,
             message: "product created",
@@ -58,7 +66,7 @@ exports.postEditProduct = async (req, res, next) => {
     const price=req.body.price;
     const image = req.files[0]
     const id = req.body.id;
-    const quantity=req.body
+    let quantity=req.body.quantity
 
 
     try {
@@ -70,6 +78,8 @@ exports.postEditProduct = async (req, res, next) => {
         }
 
         const product = await Product.findById(id);
+
+
 
         if (!product) {
             const error = new Error(`product not found`);
@@ -88,12 +98,15 @@ exports.postEditProduct = async (req, res, next) => {
         product.name = name;
         product.productType = productType;
         product.price=price;
-        product.quantity=quantity||product.quantity
+        product.quantity=parseInt(quantity)||product.quantity
 
         if (image) {
             deleteFile.deleteFile(path.join(__dirname + '/../../' + product.imageUrl));
-            product.imageUrl = image.path;
+            let img=await cloudinary.uploader.upload(image.path);
+            product.imageUrl = img.url;
+            fs.unlinkSync(image.path);
         }
+        
         const updated = await product.save()
 
         res.status(200).json({
